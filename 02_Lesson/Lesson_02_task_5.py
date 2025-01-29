@@ -10,6 +10,7 @@ def month_to_season(month):
     else:
         return 'Неверный номер месяца'
 
+
 if __name__ == "__main__":
     month = int(input('Введите номер месяца: (1-12): '))
     season = month_to_season(month)
