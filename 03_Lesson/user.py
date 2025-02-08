@@ -16,6 +16,6 @@ class User:
         return f"User: {self.first_name}, last_name: {self.last_name}"
 
 
-Lara_Pozdnyakova = User("Lara", "Pozdnyakova")
+
 
 
