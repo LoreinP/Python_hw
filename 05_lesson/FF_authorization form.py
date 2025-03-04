@@ -13,6 +13,7 @@ driver.get("http://the-internet.herokuapp.com/login")
 username_field = driver.find_element(By.CSS_SELECTOR, "username")
 password_field = driver.find_element(By.CSS_SELECTOR,"password")
 
+
 sleep(5)
 
 username_field.send_keys("tomsmith")
