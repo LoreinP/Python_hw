@@ -14,5 +14,4 @@ button_text = 'Add Element'
 button_without_id = driver.find_element(By.CSS_SELECTOR,'button.btn.btn-primary')
 button_without_id.click(3)
 
-
 driver.quit()

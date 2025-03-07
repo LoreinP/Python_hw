@@ -19,7 +19,7 @@ sleep(5)
 
 
 # нажать на кнопку Close
-close_button = driver.find_element(By.CSS_SELECTOR, ".modal-footer .close-button")
+close_button = driver.find_element(By.CLASS_NAME, ".modal-footer>p")
 close_button.click()
 
 
