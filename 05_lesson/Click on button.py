@@ -17,7 +17,6 @@ sleep(10)
 # 5 раз кликнуть на кнопку
 button = webdriver.find_element(By.CSS_SELECTOR, "#Add element")
 for bu in range(5):
-
      button.click(bu)
 
 
