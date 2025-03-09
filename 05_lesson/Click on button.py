@@ -7,29 +7,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-
-driver.get('http://the-internet.herokuapp.com/add_remove_elements/')
+driver.get('https://www.example.com')
 
 sleep(10)
 
-
-
-# 5 раз кликнуть на кнопку
-button = webdriver.find_element(By.CSS_SELECTOR, "#Add element")
+button = driver.find_element(By.CSS_SELECTOR, "button")
 for bu in range(5):
-     button.click(bu)
+    button.click()
 
-
-# собрать список кнопок Delete
-# delete_button = webdriver.find_element(By.CSS_SELECTOR, "button.added_mannually")
-# print(len(delete_button))
-# вывести размер списка
-
-
+delete_button = driver.find_elements(By.CLASS_NAME, "added_mannually")
 
 sleep(5)
 
-
-# вывести размер списка
-# sleep(5)
+driver.quit()
 

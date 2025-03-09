@@ -6,13 +6,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
+driver.get = ("https://uitestingplayground.com/dinamicid")
 
-driver.get= 'https://www.example.com'
-button_text = 'Add Element'
-
-
-button_without_id = driver.find_element(By.CSS_SELECTOR,'button.btn.btn-primary')
-button_without_id.click(3)
-
+button_without_id = driver.find_element(By.CSS_SELECTOR,"button.btn-primary")
+button_without_id.click()
 
 driver.quit()

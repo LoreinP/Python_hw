@@ -6,11 +6,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-driver.get("htt://www.example.com")
+driver.get("https://uitestingplayground.com/classattr")
 
-for i in range(3):
-    blue_button = driver.find_element(By.CSS_SELECTOR,"button[class = 'btn btn-primary']")
-    blue_button.click()
-
+blue_button = driver.find_element(By.CSS_SELECTOR,"button.btn-primary.btn-test").click()
+blue_button.click()
 
 driver.quit()
