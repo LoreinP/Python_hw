@@ -9,7 +9,7 @@ driver.get("http://uitestingplayground.com/textinput")
 
 input = driver.find_element(By.CSS_SELECTOR, '.form-control')
 
-input.send_text = ('SkyPro')
+input.send_keys('SkyPro')
 
 button = driver.find_element(By.CSS_SELECTOR, '#updatingButton')
 button.click()
