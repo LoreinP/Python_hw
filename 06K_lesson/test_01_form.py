@@ -1,52 +1,51 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@pytest.fixture
-def driver():
+@pytest.fixture(scope="function")
+def browser():
     driver = webdriver.Chrome()
-    driver.maximize_window()
     yield driver
     driver.quit()
 
-def test_but(driver):
-    driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
 
-    driver.find_element(By.NAME, "firstName").send_keys("Иван")
-    driver.find_element(By.NAME, "lastName").send_keys("Петров")
-    driver.find_element(By.NAME, "address").send_keys("Ленина, 55-3")
-    driver.find_element(By.NAME, "email").send_keys("test@skypro.com")
-    driver.find_element(By.NAME, "phone").send_keys("+7985899998787")
-    driver.find_element(By.NAME, "zip").send_keys("")
-    driver.find_element(By.NAME, "city").send_keys("Москва")
-    driver.find_element(By.NAME, "country").send_keys("Россия")
-    driver.find_element(By.NAME, "job").send_keys("QA")
-    driver.find_element(By.NAME, "company").send_keys("SkyPro")
+def test_form_submission(browser):
+    browser.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
 
-    driver.find_element(By.CSS_SELECTOR,"button[type=`submit`]").click()
+    browser.find_element(By.NAME, "first-name").send_keys("Иван")
+    browser.find_element(By.NAME, "last-name").send_keys("Петров")
+    browser.find_element(By.NAME, "address").send_keys("Ленина, 55-3")
+    browser.find_element(By.NAME, "e-mail").send_keys("test@skypro.com")
+    browser.find_element(By.NAME, "phone").send_keys("+7985899998787")
+    browser.find_element(By.NAME, "city").send_keys("Москва")
+    browser.find_element(By.NAME, "country").send_keys("Россия")
+    browser.find_element(By.NAME, "job-position").send_keys("QA")
+    browser.find_element(By.NAME, "company").send_keys("SkyPro")
 
-    wait = WebDriverWait(driver,15)
+    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
 
-    success_messege = wait.until(EC.visibility_of_element_located((By.XPATH, "//dif[contains(@class, alert-success')]")))
-    alert_danger_color = "rgba(248, 215, 218, 1)"
-    color_zip = zip.value_of_css_property("background-color")
+    WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.ID, "first-name"))
+    )
 
-    assert color_zip == alert_danger_color, f"Expected {alert_danger_color}, but got {color_zip}"
+    zip_code_field = browser.find_element(By.ID, "zip-code")
+    assert "alert-danger" in zip_code_field.get_attribute("class"), (
+        "Поле Zip code не подсвечено красным"
+    )
 
-    alert_success_color = "rgba(209, 231, 221, 1)"
-    fields = [first_name, last_name, address, email, phone_number, city, country, job_position, company]
+    fields_to_check = [
+        "first-name", "last-name", "address", "e-mail", "phone",
+        "city", "country", "job-position", "company"
+    ]
 
-    for field in fields:
-        field_color = field.value_of_property("background-color")
-
-    assert field_color == alert_success_color, f"Expected {alert_success_color} for {field.get_attribute('name')}, but got {field_color}"
-
-    driver.quit()
+    for field_id in fields_to_check:
+        field = browser.find_element(By.ID, field_id)
+        assert "alert-success" in field.get_attribute("class"), (
+            f"Поле {field_id} не подсвечено зеленым"
+        )
 
 
 
