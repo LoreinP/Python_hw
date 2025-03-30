@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 @pytest.fixture
@@ -12,40 +14,61 @@ def driver():
     driver.quit()
 
 def test_purchase_total(driver):
-    driver.get = ("https://www.saucedemo.com/")
+    # Открываем страницу
+    driver.get("https://www.saucedemo.com/")
 
-    user_name = driver.find_element(By.NAME, "#user-name")
+    # Ожидаем появление поля логина и вводим данные
+    user_name = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "user-name"))
+    )
     user_name.clear()
-    user_name.send_keys("standart_user")
+    user_name.send_keys("standard_user")  # Исправлена опечатка было "standart_user"
 
-    password = driver.find_element(By.CSS_SELECTOR, "#password")
+    # Ожидаем появление поля пароля и вводим данные
+    password = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "password"))
+    )
     password.clear()
-    password.send_keys("secret_souch")
+    password.send_keys("secret_sauce")  # Исправлена опечатка было "secret_souch"
 
-    driver.find_element(By.CSS_SELECTOR, '#login-button').click()
-    driver.find_element(By.CSS_SELECTOR, '#add-to-cart_Sauce_labs Backpack').click()
-    driver.find_element(By.CSS_SELECTOR, '#add-to-cart_Sauce_bolt T-Shirt').click()
-    driver.find_element(By.CSS_SELECTOR, '#add-to-cart_Sauce_labs Onesie').click()
+    # Кликаем кнопку входа
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "login-button"))).click()
 
-    driver.find_element(By.CSS_SELECTOR, 'a.shoping_card_linc').click()
-    driver.find_element(By.CSS_SELECTOR, '#first-name').send_keys("Лариса")
-    driver.find_element(By.CSS_SELECTOR, '#last-name').send_keys("Позднякова")
-    driver.find_element(By.CSS_SELECTOR, '#postal-code').send_keys("135135")
+    # Добавляем товары в корзину
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "add-to-cart-sauce-labs-backpack"))).click()
 
-    driver.find_element(By.CSS_SELECTOR, '#continue').click()
-    total = driver.find_element(By.CSS_SELECTOR, 'div.summary_total_label').text
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "add-to-cart-sauce-labs-bolt-t-shirt"))).click()
 
-    print(total)
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "add-to-cart-sauce-labs-onesie"))).click()
 
-    assert total
+    # Переходим в корзину
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link"))).click()
 
-@pytest.mark.filterwarnings("ignore:test_purchase_total(driver)")
-def test_total(driver):
+    # Переходим к оформлению заказа
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "checkout"))).click()
 
-    assert test_total(driver) == 'Total: $58.29'
+    # Заполняем данные
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "first-name"))).send_keys("Лариса")
 
-    driver.quit()
+    driver.find_element(By.ID, "last-name").send_keys("Позднякова")
+    driver.find_element(By.ID, "postal-code").send_keys("135135")
 
+    # Продолжаем оформление
+    WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "continue"))).click()
+
+    # Проверяем итоговую сумму
+    total = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "summary_total_label"))).text
+
+    assert total == 'Total: $58.29'
 
 
 

@@ -14,15 +14,18 @@ def browser():
 def test_calc_submission(browser):
     browser.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
 
+    delay_input = browser.find_element(By.CSS_SELECTOR, "#delay")
+    delay_input.clear()
+    delay_input.send_keys("45")
+
     browser.find_element(By.XPATH, "//span[text()='7']").click()
     browser.find_element(By.XPATH, "//span[text()='+']").click()
     browser.find_element(By.XPATH, "//span[text()='8']").click()
     browser.find_element(By.XPATH, "//span[text()='=']").click()
 
-    delay = browser.find_element(By.CSS_SELECTOR, "input#delay")
-    delay.clear()
-    delay.send_keys("45")
+    result = WebDriverWait(browser, 46).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".screen"), "15"))
 
-    browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+    assert result, "Рузультат на экране не равен 15"
 
-    browser.quit()
+
