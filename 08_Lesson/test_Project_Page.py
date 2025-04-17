@@ -5,9 +5,9 @@ project_page = ProjectPage()
 
 @pytest.fixture(scope="module")
 def setup_project():
-    ProjectPage= "test_project"
+    project_name= "test_project"
     password = "secure_password"
-    ProjectPage.create_project(ProjectPage, password)
+    ProjectPage.create_project(project_name, password)
     yield ProjectPage, password
     ProjectPage.authenticate_project(ProjectPage, password)
 
