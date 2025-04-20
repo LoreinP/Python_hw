@@ -7,7 +7,7 @@ class ProjectPage:
         response = requests.post(f"{self.BASE_URL}/users", json={"project": project})
         return response
 
-    def get_token(user='harrypotter', password='expelliarmus'):
+    def get_token(user= 'harrypotter', password='expelliarmus'):
         creds = {
         'username': user,
         'password': password
