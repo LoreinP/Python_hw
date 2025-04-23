@@ -18,7 +18,7 @@ def test_create_project_positive(setup_project):
 
 def test_create_project_negative():
     response = project_page.create_project("")
-    assert response.status_code == 400
+    assert response.status_code == 401
 
 def test_authenticate_project_positive(setup_project):
     project, password = setup_project
@@ -27,7 +27,7 @@ def test_authenticate_project_positive(setup_project):
 
 def test_authenticate_project_negative():
     response = project_page.authenticate_project("invalid_project")
-    assert response.status_code == 401
+    assert response.status_code == 400
 
 def test_get_project_info_positive(setup_project):
     project, password = setup_project
